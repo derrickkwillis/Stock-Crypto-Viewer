@@ -12,13 +12,13 @@ import {
 import { useLocalSearchParams } from "expo-router";
 import { fetchCompanyNews } from "../../api/api";
 
-const ITEMS_PER_PAGE = 10; // Number of news items per page
+const ITEMS_PER_PAGE = 10;
 
 const NewsPage = () => {
   const { symbol } = useLocalSearchParams();
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1); // Track the current page
+  const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
 
   useEffect(() => {
