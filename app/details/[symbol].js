@@ -7,14 +7,18 @@ import {
   StyleSheet,
   TouchableOpacity,
   Linking,
+  Button,
 } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { fetchCompanyNews } from "../../api/api";
+
+const ITEMS_PER_PAGE = 10; // Number of news items per page
 
 const NewsPage = () => {
   const { symbol } = useLocalSearchParams();
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1); // Track the current page
   const router = useRouter();
 
   useEffect(() => {
@@ -26,6 +30,12 @@ const NewsPage = () => {
 
     loadNews();
   }, [symbol]);
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, news.length);
+  const displayedNews = news.slice(startIndex, endIndex);
+
+  const totalPages = Math.ceil(news.length / ITEMS_PER_PAGE);
 
   if (loading) {
     return (
@@ -56,7 +66,7 @@ const NewsPage = () => {
       </View>
 
       <FlatList
-        data={news}
+        data={displayedNews}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => Linking.openURL(item.url)}>
@@ -72,6 +82,23 @@ const NewsPage = () => {
           </TouchableOpacity>
         )}
       />
+      <View style={styles.pagination}>
+        <Button
+          title="Previous"
+          onPress={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+        />
+        <Text style={styles.pageNumber}>
+          Page {currentPage} of {totalPages}
+        </Text>
+        <Button
+          title="Next"
+          onPress={() =>
+            setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev))
+          }
+          disabled={currentPage === totalPages}
+        />
+      </View>
     </View>
   );
 };
@@ -120,6 +147,29 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#999",
     marginTop: 4,
+  },
+  pagination: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  paginationButton: {
+    backgroundColor: "#007BFF",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+  },
+  paginationButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  disabledButton: {
+    backgroundColor: "#ccc",
+  },
+  pageNumber: {
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
