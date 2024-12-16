@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Linking } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { fetchCompanyNews } from "../../api/api";
 
@@ -8,7 +15,7 @@ const NewsPage = () => {
   const { symbol } = useLocalSearchParams();
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const router = useRouter(); 
+  const router = useRouter();
 
   useEffect(() => {
     const loadNews = async () => {
@@ -38,16 +45,16 @@ const NewsPage = () => {
 
   return (
     <View style={styles.container}>
-      {/* Back Button and Title */}
       <View style={styles.header}>
-  <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-    <Text style={styles.backButtonText}>← Back</Text>
-  </TouchableOpacity>
-  <Text style={styles.title}>Latest News for {symbol}</Text>
-</View>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
+          <Text style={styles.backButtonText}>← Back</Text>
+        </TouchableOpacity>
+        <Text style={styles.title}>Latest News for {symbol}</Text>
+      </View>
 
-
-      {/* News List */}
       <FlatList
         data={news}
         keyExtractor={(item) => item.id}
@@ -70,31 +77,31 @@ const NewsPage = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        backgroundColor: "#fff",
-      },
-      header: {
-        marginBottom: 16,
-        flexDirection: "row", // Align items horizontally
-        alignItems: "center", // Center items vertically
-      },
-      backButton: {
-        marginRight: 10, // Add some spacing to the right of the button
-        padding: 4, // Add slight padding for touch area
-      },
-      backButtonText: {
-        fontSize: 16,
-        fontWeight: "600",
-        color: "#007BFF", // Clean blue color for back button
-      },
-      title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        flex: 1, // Allow the title to expand and align properly
-      },
-  
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: "#fff",
+  },
+  header: {
+    marginBottom: 16,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  backButton: {
+    marginRight: 10,
+    padding: 4,
+  },
+  backButtonText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#007BFF",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    flex: 1,
+  },
+
   newsItem: {
     paddingVertical: 10,
     borderBottomWidth: 1,

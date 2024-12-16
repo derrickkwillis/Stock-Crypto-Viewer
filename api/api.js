@@ -29,25 +29,25 @@ export const fetchStockData = async (symbol) => {
 };
 
 export const fetchCompanyNews = async (symbol) => {
-    const fromDate = new Date();
-    fromDate.setDate(fromDate.getDate() - 7); // News from the last 7 days
-    const formattedFromDate = fromDate.toISOString().split("T")[0]; // YYYY-MM-DD format
-    const formattedToDate = new Date().toISOString().split("T")[0];
-  
-    try {
-      const response = await axios.get(`${BASE_URL}/company-news`, {
-        params: {
-          symbol,
-          from: formattedFromDate,
-          to: formattedToDate,
-          token: API_KEY,
-        },
-      });
-  
-      console.log("News Data Response:", response.data);
-      return response.data;
-    } catch (error) {
-      console.error(`Error fetching news for ${symbol}:`, error.message);
-      return [];
-    }
-  };
+  const fromDate = new Date();
+  fromDate.setDate(fromDate.getDate() - 7); // News from the last 7 days
+  const formattedFromDate = fromDate.toISOString().split("T")[0];
+  const formattedToDate = new Date().toISOString().split("T")[0];
+
+  try {
+    const response = await axios.get(`${BASE_URL}/company-news`, {
+      params: {
+        symbol,
+        from: formattedFromDate,
+        to: formattedToDate,
+        token: API_KEY,
+      },
+    });
+
+    console.log("News Data Response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching news for ${symbol}:`, error.message);
+    return [];
+  }
+};
